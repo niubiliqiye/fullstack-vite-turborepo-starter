@@ -2,6 +2,7 @@ import axios, {type AxiosError, type AxiosResponse, type InternalAxiosRequestCon
 import {toast} from 'sonner';
 import {useAuthStore} from '@/store/auth/auth.store';
 import {useLoadingStore} from '@/store/loading/loading.store';
+import {router} from '@/router';
 
 type ApiErrorBody = {
   message?: string;
@@ -43,7 +44,11 @@ axiosInstance.interceptors.response.use(
       const pathname = globalThis.window?.location.pathname ?? '';
       if (!pathname.includes('/login')) {
         const locale = pathname.split('/')[1] ?? 'en';
-        globalThis.window.location.href = `/${locale}/login`;
+        const search = globalThis.window?.location.search ?? '';
+        const hash = globalThis.window?.location.hash ?? '';
+        const redirectPath = `${pathname}${search}${hash}`;
+        const query = new URLSearchParams({redirect: redirectPath}).toString();
+        void router.navigate(`/${locale}/login?${query}`, {replace: true});
       }
 
       throw error;

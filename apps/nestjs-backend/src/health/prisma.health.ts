@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import {Injectable} from '@nestjs/common';
 import {HealthIndicator, HealthIndicatorResult, HealthCheckError} from '@nestjs/terminus';
-import {PrismaService} from '@next-nest-turbo-auth-boilerplate/db';
+import {PrismaService} from 'db';
 
 @Injectable()
 export class PrismaHealthIndicator extends HealthIndicator {

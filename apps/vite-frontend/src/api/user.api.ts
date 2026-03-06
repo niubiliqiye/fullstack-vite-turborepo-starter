@@ -1,4 +1,4 @@
-import {type UserDto} from '@next-nest-turbo-auth-boilerplate/shared';
+import {type UserDto} from 'shared';
 import {axiosInstance} from '@/lib/axios';
 
 export async function getMeApi(): Promise<UserDto> {

@@ -29,8 +29,8 @@
     "@nestjs/swagger": "11.2.6",
     "@nestjs/terminus": "11.0.0",
     "@nestjs/throttler": "6.5.0",
-    "@next-nest-turbo-auth-boilerplate/db": "*",
-    "@next-nest-turbo-auth-boilerplate/shared": "*",
+    "db": "*",
+    "shared": "*",
     "axios": "1.13.5",
     "bcrypt": "^6.0.0",
     "class-transformer": "0.5.1",
@@ -46,6 +46,7 @@
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
+    "typeorm": "^0.3.28",
     "uuid": "13.0.0"
   },
   "devDependencies": {

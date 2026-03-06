@@ -7,6 +7,7 @@ import {RegisterPage} from '../pages/auth/RegisterPage.tsx';
 import {MainLayout} from '@/layouts/MainLayout.tsx';
 import {BareLayout} from '@/layouts/BareLayout.tsx';
 import {ProvidersLayout} from '@/layouts/ProvidersLayout.tsx';
+import {TestPage} from '@/pages/test/TestPage.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
         children: [
           {path: 'login', element: <LoginPage />},
           {path: 'register', element: <RegisterPage />},
+          {path: 'test', element: <TestPage />},
         ],
       },
     ],

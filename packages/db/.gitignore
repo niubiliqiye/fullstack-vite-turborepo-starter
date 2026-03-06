@@ -1,3 +1,8 @@
 node_modules
 dist
 .env
+创建数据库表流程.md
+.idea
+.vscode
+.DS_Store
+*.log

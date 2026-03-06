@@ -8,7 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// MikroORM migrations table (ignore, kept for compatibility)
 model mikro_orm_migrations {
   id          Int       @id @default(autoincrement())
   name        String?   @db.VarChar(255)
@@ -17,18 +16,29 @@ model mikro_orm_migrations {
   @@ignore
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
-
 model User {
   id           String   @id @default(uuid()) @db.Uuid
   email        String   @unique
   passwordHash String   @map("password_hash")
   role         UserRole @default(USER)
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp()
-  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamp()
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
 
   @@map("users")
+}
+
+model Cat {
+  id        Int      @id @default(autoincrement())
+  name      String
+  age       Int
+  variety   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  @@map("cats")
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }

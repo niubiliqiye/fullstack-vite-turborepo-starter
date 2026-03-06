@@ -3,7 +3,7 @@ import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {Helmet} from 'react-helmet-async';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {Link, useNavigate, useParams, useSearchParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
@@ -21,6 +21,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginPage(): JSX.Element {
   const {t} = useTranslation();
   const {locale} = useParams<{locale: string}>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const {showToast} = useToast();
   const {login, isPending} = useLogin();
@@ -34,7 +35,13 @@ export function LoginPage(): JSX.Element {
   const onSubmit = async (data: LoginFormData): Promise<void> => {
     try {
       await login(data.email, data.password);
-      void navigate(`/${locale ?? 'en'}`);
+      const redirect = searchParams.get('redirect');
+      if (redirect?.startsWith('/')) {
+        void navigate(redirect, {replace: true});
+        return;
+      }
+
+      void navigate(`/${locale ?? 'en'}`, {replace: true});
     } catch {
       showToast({severity: 'error', summary: t('auth.loginFailed')});
     }

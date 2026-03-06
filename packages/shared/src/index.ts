@@ -5,3 +5,6 @@ export {RegisterDto} from './dtos/auth/register.dto';
 export {AuthResponseDto} from './dtos/auth/auth-response.dto';
 export {UserDto} from './dtos/user/user.dto';
 export {UpdateUserDto} from './dtos/user/update-user.dto';
+export {CreateCatDto} from './dtos/cat/create-cat.dto';
+export {UpdateCatDto} from './dtos/cat/update-cat.dto';
+export {CatDto} from './dtos/cat/cat.dto';

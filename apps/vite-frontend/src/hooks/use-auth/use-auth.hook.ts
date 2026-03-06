@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {type UserDto} from '@next-nest-turbo-auth-boilerplate/shared';
+import {type UserDto} from 'shared';
 import {getMeApi} from '@/api/user.api';
 import {loginApi, logoutApi, registerApi} from '@/api/auth.api';
 import {useAuthStore} from '@/store/auth/auth.store';

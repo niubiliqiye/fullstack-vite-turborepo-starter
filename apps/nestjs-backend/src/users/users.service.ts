@@ -1,6 +1,6 @@
 import {Injectable, NotFoundException, ConflictException} from '@nestjs/common';
-import {PrismaService, type User} from '@next-nest-turbo-auth-boilerplate/db';
-import {UserDto, UserRole} from '@next-nest-turbo-auth-boilerplate/shared';
+import {PrismaService, type User} from 'db';
+import {UserDto, UserRole} from 'shared';
 
 @Injectable()
 export class UsersService {

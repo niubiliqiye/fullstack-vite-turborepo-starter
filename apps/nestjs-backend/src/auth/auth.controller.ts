@@ -1,7 +1,7 @@
 import {Body, Controller, HttpCode, HttpStatus, Post, Res} from '@nestjs/common';
 import {ApiTags, ApiOperation, ApiResponse} from '@nestjs/swagger';
 import {type Response} from 'express';
-import {LoginDto, RegisterDto, AuthResponseDto} from '@next-nest-turbo-auth-boilerplate/shared';
+import {LoginDto, RegisterDto, AuthResponseDto} from 'shared';
 import {AuthService} from './auth.service';
 
 const accessTokenCookie = 'access_token';

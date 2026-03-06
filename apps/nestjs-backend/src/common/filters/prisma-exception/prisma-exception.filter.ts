@@ -5,7 +5,7 @@ import {
   PrismaClientRustPanicError,
   PrismaClientInitializationError,
   PrismaClientUnknownRequestError,
-} from '@next-nest-turbo-auth-boilerplate/db';
+} from 'db';
 import {Request, Response} from 'express';
 import {ErrorResponse} from './types/error-response.type';
 

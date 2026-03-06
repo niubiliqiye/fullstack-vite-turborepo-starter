@@ -13,7 +13,7 @@ Shared database package for the monorepo using Prisma ORM.
 ### In NestJS Applications
 
 ```typescript
-import {PrismaModule} from '@next-nest-turbo-auth-boilerplate/db';
+import {PrismaModule} from 'db';
 
 @Module({
   imports: [PrismaModule],
@@ -25,7 +25,7 @@ export class AppModule {}
 ### Direct Prisma Client Usage
 
 ```typescript
-import {PrismaClient} from '@next-nest-turbo-auth-boilerplate/db';
+import {PrismaClient} from 'db';
 
 const prisma = new PrismaClient();
 ```

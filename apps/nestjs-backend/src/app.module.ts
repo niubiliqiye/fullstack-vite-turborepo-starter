@@ -3,7 +3,7 @@ import {ConfigModule} from '@nestjs/config';
 import {APP_GUARD} from '@nestjs/core';
 import {ScheduleModule} from '@nestjs/schedule';
 import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler';
-import {PrismaModule} from '@next-nest-turbo-auth-boilerplate/db';
+import {PrismaModule} from 'db';
 import {CommonModule} from './common/common.module';
 import appConfig from './config/app.config';
 import validationSchema from './config/validation.schema';
@@ -11,6 +11,7 @@ import {HealthModule} from './health/health.module';
 import {RedisModule} from './redis/redis.module';
 import {AuthModule} from './auth/auth.module';
 import {UsersModule} from './users/users.module';
+import {CatsModule} from './cats/cats.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import {UsersModule} from './users/users.module';
     RedisModule,
     AuthModule,
     UsersModule,
+    CatsModule,
   ],
   providers: [
     {

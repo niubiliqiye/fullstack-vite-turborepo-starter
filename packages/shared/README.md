@@ -21,5 +21,5 @@ A package with all things shared between frontend and backend.
 Import shared types and DTOs in your frontend and backend applications:
 
 ```typescript
-import {Dto, type Type} from '@next-nest-turbo-auth-boilerplate/shared';
+import {Dto, type Type} from 'shared';
 ```

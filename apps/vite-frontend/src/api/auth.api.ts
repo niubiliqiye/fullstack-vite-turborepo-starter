@@ -1,4 +1,4 @@
-import {type AuthResponseDto} from '@next-nest-turbo-auth-boilerplate/shared';
+import {type AuthResponseDto} from 'shared';
 import {axiosInstance} from '@/lib/axios';
 
 type LoginPayload = {

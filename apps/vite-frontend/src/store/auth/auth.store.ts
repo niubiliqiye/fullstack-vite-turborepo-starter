@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import {type UserDto} from '@next-nest-turbo-auth-boilerplate/shared';
+import {type UserDto} from 'shared';
 
 type AuthStore = {
   user: UserDto | undefined;

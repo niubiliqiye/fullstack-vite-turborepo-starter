@@ -1,5 +1,5 @@
 {
-  "name": "@next-nest-turbo-auth-boilerplate/db",
+  "name": "db",
   "version": "0.0.1",
   "scripts": {
     "start:dev": "tsc --watch",

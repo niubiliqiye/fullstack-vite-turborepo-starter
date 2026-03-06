@@ -1,7 +1,7 @@
 import {Injectable, UnauthorizedException} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
 import {compareSync, hashSync} from 'bcrypt';
-import {UserDto, LoginDto, RegisterDto} from '@next-nest-turbo-auth-boilerplate/shared';
+import {UserDto, LoginDto, RegisterDto} from 'shared';
 import {UsersService} from '../users/users.service';
 import {type JwtPayload} from './strategies/jwt.strategy';
 
