@@ -5,11 +5,16 @@ import {DocumentBuilder, OpenAPIObject, SwaggerModule} from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import * as compression from 'compression';
 import helmet from 'helmet';
-import {ConfigKey} from './config/config-key.enum';
+import {LogUploaderAdminModule, LogUploaderHttpModule} from 'log-uploader';
 import {AppModule} from './app.module';
+import {AuthModule} from './auth/auth.module';
+import {CatsModule} from './cats/cats.module';
 import {HttpExceptionFilter} from './common/filters/http-exception/http-exception.filter';
-import {PrismaExceptionFilter} from './common/filters/prisma-exception/prisma-exception.filter';
 import {Logger as LoggerService} from './common/logger/logger.service';
+import {PrismaExceptionFilter} from './common/filters/prisma-exception/prisma-exception.filter';
+import {ConfigKey} from './config/config-key.enum';
+import {HealthModule} from './health/health.module';
+import {UsersModule} from './users/users.module';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
@@ -46,13 +51,32 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new HttpExceptionFilter(), new PrismaExceptionFilter());
 
   if (enableSwagger) {
-    const swaggerConfig = new DocumentBuilder()
-      .setTitle('nest auth boilerplate')
-      .setDescription('The nest auth boilerplate API description')
+    const publicSwaggerConfig = new DocumentBuilder()
+      .setTitle('Public API')
+      .setDescription('Frontend/public API docs')
       .setVersion('1.0')
       .build();
-    const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('api/docs', app, documentFactory);
+
+    const adminSwaggerConfig = new DocumentBuilder()
+      .setTitle('Admin API')
+      .setDescription('Admin/backoffice API docs')
+      .setVersion('1.0')
+      .build();
+
+    const publicDocument = (): OpenAPIObject =>
+      SwaggerModule.createDocument(app, publicSwaggerConfig, {
+        include: [AuthModule, UsersModule, CatsModule, HealthModule, LogUploaderHttpModule],
+        deepScanRoutes: true,
+      });
+
+    const adminDocument = (): OpenAPIObject =>
+      SwaggerModule.createDocument(app, adminSwaggerConfig, {
+        include: [LogUploaderAdminModule],
+        deepScanRoutes: true,
+      });
+
+    SwaggerModule.setup('api/docs', app, publicDocument);
+    SwaggerModule.setup('admin/docs', app, adminDocument);
   }
 
   await app.listen(port);
@@ -60,6 +84,7 @@ async function bootstrap(): Promise<void> {
   if (enableSwagger) {
     const logger = new Logger('bootstrap', {timestamp: true});
     logger.log(`Swagger is running on: ${await app.getUrl()}/api/docs`);
+    logger.log(`Swagger admin is running on: ${await app.getUrl()}/admin/docs`);
   }
 }
 
