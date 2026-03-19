@@ -1,6 +1,8 @@
+import {IsIn, IsOptional, IsString, MaxLength} from 'class-validator';
 import {Type} from 'class-transformer';
-import {IsInt, IsOptional, Max, Min} from 'class-validator';
 import {ApiPropertyOptional} from '@nestjs/swagger';
+import {IsInt, Max, Min} from 'class-validator';
+import {LogType} from '../../common/interfaces';
 
 export class QueryLogStatsDto {
   @ApiPropertyOptional({
@@ -13,4 +15,22 @@ export class QueryLogStatsDto {
   @Min(1)
   @Max(30)
   days?: number = 7;
+
+  @ApiPropertyOptional({
+    description: '按日志类型过滤',
+    enum: ['frontend', 'event', 'audit'],
+    example: 'event',
+  })
+  @IsOptional()
+  @IsIn(['frontend', 'event', 'audit'])
+  logType?: LogType;
+
+  @ApiPropertyOptional({
+    description: '按埋点事件名过滤，仅对 event 类型有意义',
+    example: 'button_click',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  eventName?: string;
 }

@@ -25,12 +25,14 @@ export class LogUploaderService {
       maxBatchSize: this.options.maxBatchSize ?? 200,
       storageType: this.options.storage?.type ?? 'file',
       allowedLevels: this.options.allowedLevels ?? ['debug', 'info', 'warn', 'error'],
+      supportedLogTypes: ['frontend', 'event', 'audit'],
       timestamp: new Date().toISOString(),
     };
   }
 
   async upload(dto: UploadLogDto, request?: Request): Promise<void> {
     this.ensureLevelAllowed(dto.level);
+    this.validateBusinessRules(dto);
 
     try {
       const normalized = this.normalize(dto, request);
@@ -55,6 +57,7 @@ export class LogUploaderService {
 
     for (const dto of dtos) {
       this.ensureLevelAllowed(dto.level);
+      this.validateBusinessRules(dto);
     }
 
     try {
@@ -63,6 +66,12 @@ export class LogUploaderService {
     } catch (error) {
       this.logger.error('Failed to save batch logs', error instanceof Error ? error.stack : undefined);
       throw new InternalServerErrorException('Failed to save batch logs');
+    }
+  }
+
+  private validateBusinessRules(dto: UploadLogDto): void {
+    if (dto.logType === 'event' && !dto.eventName) {
+      throw new BadRequestException('eventName is required when logType=event');
     }
   }
 
@@ -89,9 +98,18 @@ export class LogUploaderService {
     return {
       appName: this.options.appName,
       level: dto.level,
+      logType: dto.logType ?? 'frontend',
       message: dto.message,
       timestamp: dto.timestamp ?? new Date().toISOString(),
       serverReceiveTime: new Date().toISOString(),
+
+      eventName: dto.eventName,
+      sessionId: dto.sessionId,
+      source: dto.source,
+      channel: dto.channel,
+      appVersion: dto.appVersion,
+      platform: dto.platform,
+
       module: dto.module,
       traceId: dto.traceId,
       userId: dto.userId,
@@ -99,6 +117,8 @@ export class LogUploaderService {
       page: dto.page,
       ip: this.getIp(request),
       ua: request?.headers?.['user-agent'],
+
+      properties: deepRedact(dto.properties, redactFields) as Record<string, any> | undefined,
       extra: deepRedact(dto.extra, redactFields) as Record<string, any> | undefined,
     };
   }

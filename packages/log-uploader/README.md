@@ -121,6 +121,7 @@ import { LogUploaderCoreModule } from '@your-org/nest-log-uploader';
       storage: {
         type: 'file',
         baseDir: './storage/logs',
+        splitByLogType: true,// 是否启用按照logType分目录
       },
     }),
   ],

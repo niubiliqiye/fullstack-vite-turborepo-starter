@@ -49,6 +49,7 @@ import {CatsModule} from './cats/cats.module';
         storage: {
           type: 'file',
           baseDir: configService.get<string>('LOG_BASE_DIR') ?? './logs',
+          splitByLogType: true,
         },
       }),
     }),

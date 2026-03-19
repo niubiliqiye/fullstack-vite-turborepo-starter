@@ -33,7 +33,7 @@ export class LogUploaderController {
 
   @Post('upload')
   @UseGuards(LogUploadAuthGuard)
-  @ApiOperation({summary: '单条日志上传'})
+  @ApiOperation({summary: '单条日志/埋点上传'})
   @ApiBearerAuth()
   @ApiBody({type: UploadLogDto})
   @ApiOkResponse({description: '上传成功'})
@@ -44,7 +44,7 @@ export class LogUploaderController {
 
   @Post('batch')
   @UseGuards(LogUploadAuthGuard)
-  @ApiOperation({summary: '批量日志上传'})
+  @ApiOperation({summary: '批量日志/埋点上传'})
   @ApiBearerAuth()
   @ApiBody({type: UploadLogBatchDto})
   @ApiOkResponse({description: '批量上传成功'})

@@ -1,4 +1,4 @@
-import {DynamicModule, Module, Provider} from '@nestjs/common';
+import {DynamicModule, Module, Global, Provider} from '@nestjs/common';
 import {FileStorageAdapter} from './adapters/file-storage.adapter';
 import {LOG_STORAGE_ADAPTER, LOG_UPLOADER_OPTIONS} from '../common/constants';
 import {
@@ -9,6 +9,7 @@ import {
 import {LogUploadAuthGuard} from './guards/log-upload-auth.guard';
 import {LogUploaderService} from './services/log-uploader.service';
 
+@Global()
 @Module({})
 export class LogUploaderCoreModule {
   static forRoot(options: LogUploaderModuleOptions): DynamicModule {
@@ -108,6 +109,7 @@ export class LogUploaderCoreModule {
       storage: {
         type: 'file',
         baseDir: './logs',
+        splitByLogType: false,
         ...options.storage,
       },
       ...options,
@@ -122,6 +124,10 @@ export class LogUploaderCoreModule {
       return options.storage.adapter;
     }
 
-    return new FileStorageAdapter(options.appName, options.storage?.baseDir ?? './logs');
+    return new FileStorageAdapter(
+      options.appName,
+      options.storage?.baseDir ?? './logs',
+      options.storage?.splitByLogType ?? false,
+    );
   }
 }

@@ -12,6 +12,7 @@ export interface LogUploaderModuleOptions {
     type: 'file' | 'custom';
     baseDir?: string;
     adapter?: StorageAdapter;
+    splitByLogType?: boolean;
   };
 }
 

@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {getCatsApi, createCatApi} from '@/api/cat.api';
 import {registerApi, loginApi} from '@/api/auth.api';
 import {uploadLogApi} from '@/api/logUpload.api';
-import {getLogsApi} from '@/api/getLogsApi.api';
+import {searchLogsApi} from '@/api/getLogsApi.api';
 
 import('./testPageStyle.scss');
 
@@ -95,13 +95,49 @@ export function TestPage() {
 
   const getLogs = async () => {
     try {
-      const response = await getLogsApi({
+      const response = await searchLogsApi({
         limit: 10,
         days: 7,
       });
       setMessage(`Logs fetched: ${JSON.stringify(response)}`);
     } catch (error: unknown) {
       setMessage(getErrorMessage(error, 'An error occurred while getting logs'));
+    }
+  };
+
+  const getRecentEventLogs = async () => {
+    try {
+      const response = await searchLogsApi({
+        logType: 'event',
+        days: 7,
+        limit: 50,
+      });
+      setMessage(`Event logs fetched: ${JSON.stringify(response)}`);
+    } catch (error: unknown) {
+      setMessage(getErrorMessage(error, 'An error occurred while getting recent event logs'));
+    }
+  };
+
+  const uploadEventLog = async () => {
+    try {
+      const response = await uploadLogApi({
+        level: 'info',
+        logType: 'event',
+        eventName: 'button_click',
+        message: 'user clicked generate button',
+        module: 'novel-editor',
+        page: '/pages/create/index',
+        userId: 'u001',
+        deviceId: 'd001',
+        sessionId: 'session_001',
+        properties: {
+          buttonName: '上传按钮埋点日志按钮',
+          position: 'footer_toolbar',
+        },
+      });
+      setMessage(`Upload event log success: ${String(Boolean(response))}`);
+    } catch (error: unknown) {
+      setMessage(getErrorMessage(error, 'An error occurred while uploading event log'));
     }
   };
 
@@ -123,11 +159,17 @@ export function TestPage() {
         {' '}
         创建Cat{' '}
       </button>
+      <button type="button" onClick={uploadLog}>
+        上传日志
+      </button>
+      <button type="button" onClick={uploadEventLog}>
+        上传按钮埋点日志
+      </button>
       <button type="button" onClick={getLogs}>
         获取日志
       </button>
-      <button type="button" onClick={uploadLog}>
-        上传日志
+      <button type="button" onClick={getRecentEventLogs}>
+        查询近七天所有埋点
       </button>
 
       <p>{message}</p>

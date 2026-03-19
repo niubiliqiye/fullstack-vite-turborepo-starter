@@ -59,14 +59,19 @@ export class LogUploaderAdminController {
   }
 
   @Get('search')
-  @ApiOperation({summary: '按条件搜索日志'})
+  @ApiOperation({summary: '按条件搜索日志/埋点'})
   @ApiOkResponse({description: '查询成功'})
   @ApiUnauthorizedResponse({description: '鉴权失败'})
   async searchLogs(@Query() query: SearchLogsDto) {
     const result = await this.adminQueryService.searchLogs({
       keyword: query.keyword,
       level: query.level,
+      logType: query.logType,
       traceId: query.traceId,
+      eventName: query.eventName,
+      sessionId: query.sessionId,
+      channel: query.channel,
+      platform: query.platform,
       startTime: query.startTime,
       endTime: query.endTime,
       limit: query.limit,
@@ -83,12 +88,14 @@ export class LogUploaderAdminController {
   }
 
   @Get('stats')
-  @ApiOperation({summary: '获取日志统计信息'})
+  @ApiOperation({summary: '获取日志/埋点统计信息'})
   @ApiOkResponse({description: '统计成功'})
   @ApiUnauthorizedResponse({description: '鉴权失败'})
   async getLogStats(@Query() query: QueryLogStatsDto) {
     const stats = await this.adminQueryService.getLogStats({
       days: query.days,
+      logType: query.logType,
+      eventName: query.eventName,
     });
 
     return successResponse(stats);
