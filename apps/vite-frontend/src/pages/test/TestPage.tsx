@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {getCatsApi, createCatApi} from '@/api/cat.api';
 import {registerApi, loginApi} from '@/api/auth.api';
+import {uploadLogApi} from '@/api/logUpload.api';
+import {getLogsApi} from '@/api/getLogsApi.api';
 
 import('./testPageStyle.scss');
 
@@ -69,6 +71,40 @@ export function TestPage() {
     }
   };
 
+  const uploadLog = async () => {
+    try {
+      const response = await uploadLogApi({
+        level: 'info',
+        message: 'test log',
+        timestamp: new Date().toISOString(),
+        module: 'test',
+        traceId: '12345678902',
+        userId: '12345678902',
+        deviceId: '12345678902',
+        page: '/test',
+        extra: {
+          status: 500,
+          reason: 'timeout',
+        },
+      });
+      setMessage(`Upload log success: ${String(Boolean(response))}`);
+    } catch (error: unknown) {
+      setMessage(getErrorMessage(error, 'An error occurred while uploading log'));
+    }
+  };
+
+  const getLogs = async () => {
+    try {
+      const response = await getLogsApi({
+        limit: 10,
+        days: 7,
+      });
+      setMessage(`Logs fetched: ${JSON.stringify(response)}`);
+    } catch (error: unknown) {
+      setMessage(getErrorMessage(error, 'An error occurred while getting logs'));
+    }
+  };
+
   return (
     <div className="testPage">
       <button type="button" onClick={register}>
@@ -87,6 +123,13 @@ export function TestPage() {
         {' '}
         创建Cat{' '}
       </button>
+      <button type="button" onClick={getLogs}>
+        获取日志
+      </button>
+      <button type="button" onClick={uploadLog}>
+        上传日志
+      </button>
+
       <p>{message}</p>
     </div>
   );

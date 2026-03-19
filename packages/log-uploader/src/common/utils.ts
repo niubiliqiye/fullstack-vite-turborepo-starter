@@ -1,9 +1,4 @@
-export function ensureArray<T>(value?: T | T[]): T[] {
-  if (value === undefined) return [];
-  return Array.isArray(value) ? value : [value];
-}
-
-export function maskValue(value: any): any {
+export function maskValue(value: unknown): string {
   if (typeof value === 'string') {
     if (value.length <= 6) return '***';
     return `${value.slice(0, 3)}***${value.slice(-2)}`;
@@ -12,7 +7,7 @@ export function maskValue(value: any): any {
   return '***';
 }
 
-export function deepRedact(input: any, redactFields: string[] = []): any {
+export function deepRedact(input: unknown, redactFields: string[] = []): unknown {
   if (input === null || input === undefined) return input;
 
   if (Array.isArray(input)) {
@@ -23,25 +18,13 @@ export function deepRedact(input: any, redactFields: string[] = []): any {
     return input;
   }
 
-  const result: Record<string, any> = {};
+  const result: Record<string, unknown> = {};
 
-  for (const [key, value] of Object.entries(input)) {
+  for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
     const shouldRedact = redactFields.some((field) => field.toLowerCase() === key.toLowerCase());
 
-    if (shouldRedact) {
-      result[key] = maskValue(value);
-    } else {
-      result[key] = deepRedact(value, redactFields);
-    }
+    result[key] = shouldRedact ? maskValue(value) : deepRedact(value, redactFields);
   }
 
   return result;
-}
-
-export function safeJsonParse<T = Record<string, any>>(value: string): T | undefined {
-  try {
-    return JSON.parse(value) as T;
-  } catch {
-    return undefined;
-  }
 }

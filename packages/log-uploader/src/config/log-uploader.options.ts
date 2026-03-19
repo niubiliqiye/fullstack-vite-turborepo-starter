@@ -1,13 +1,13 @@
 import {ModuleMetadata, Type} from '@nestjs/common';
-import {StorageAdapter} from '../common/interfaces';
+import {LogLevel, StorageAdapter} from '../common/interfaces';
 
 export interface LogUploaderModuleOptions {
   appName: string;
   authToken?: string;
-  routePrefix?: string; // 默认 internal/logs
   enableBatch?: boolean;
   maxBatchSize?: number;
   redactFields?: string[];
+  allowedLevels?: LogLevel[];
   storage?: {
     type: 'file' | 'custom';
     baseDir?: string;

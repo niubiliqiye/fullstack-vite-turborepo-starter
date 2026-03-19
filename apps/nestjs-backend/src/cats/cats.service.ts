@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import {PrismaService, Cat} from 'db';
 import {CreateCatDto, UpdateCatDto, CatDto} from 'shared';
 
@@ -16,10 +16,15 @@ export class CatsService {
     return this.prisma.cat.findMany();
   }
 
-  async findOne(id: number): Promise<Cat | undefined> {
-    return this.prisma.cat.findUnique({
+  async findOne(id: number): Promise<Cat> {
+    const cat = await this.prisma.cat.findUnique({
       where: {id},
     });
+    if (!cat) {
+      throw new NotFoundException('Cat not found');
+    }
+
+    return cat;
   }
 
   async update(updateCatDto: UpdateCatDto): Promise<Cat> {

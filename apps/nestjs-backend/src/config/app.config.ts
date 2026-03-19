@@ -22,6 +22,10 @@ const appConfig = (): Record<ConfigKey, unknown> => ({
 
   [ConfigKey.JWT_SECRET]: process.env.JWT_SECRET,
   [ConfigKey.JWT_EXPIRES_IN]: process.env.JWT_EXPIRES_IN ?? '7d',
+
+  [ConfigKey.APP_NAME]: process.env.APP_NAME,
+  [ConfigKey.LOG_BASE_DIR]: process.env.LOG_BASE_DIR,
+  [ConfigKey.LOG_UPLOAD_TOKEN]: process.env.LOG_UPLOAD_TOKEN,
 });
 
 export default appConfig;

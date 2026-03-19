@@ -1,9 +1,10 @@
 import {Module} from '@nestjs/common';
-import {ConfigModule} from '@nestjs/config';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 import {APP_GUARD} from '@nestjs/core';
 import {ScheduleModule} from '@nestjs/schedule';
 import {ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler';
 import {PrismaModule} from 'db';
+import {LogUploaderCoreModule, LogUploaderAdminModule, LogUploaderHttpModule} from 'log-uploader';
 import {CommonModule} from './common/common.module';
 import appConfig from './config/app.config';
 import validationSchema from './config/validation.schema';
@@ -38,6 +39,21 @@ import {CatsModule} from './cats/cats.module';
     AuthModule,
     UsersModule,
     CatsModule,
+    LogUploaderCoreModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        appName: configService.get<string>('APP_NAME') ?? 'nestjs-backend',
+        authToken: configService.get<string>('LOG_UPLOAD_TOKEN'),
+        allowedLevels: ['info', 'warn', 'error'],
+        storage: {
+          type: 'file',
+          baseDir: configService.get<string>('LOG_BASE_DIR') ?? './logs',
+        },
+      }),
+    }),
+    LogUploaderHttpModule,
+    LogUploaderAdminModule,
   ],
   providers: [
     {

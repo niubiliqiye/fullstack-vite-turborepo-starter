@@ -23,6 +23,10 @@ const validationSchemaMap: Record<ConfigKey, Joi.Schema> = {
 
   [ConfigKey.JWT_SECRET]: Joi.string().min(32).required(),
   [ConfigKey.JWT_EXPIRES_IN]: Joi.string().default('7d'),
+
+  [ConfigKey.APP_NAME]: Joi.string().optional(),
+  [ConfigKey.LOG_BASE_DIR]: Joi.string().optional(),
+  [ConfigKey.LOG_UPLOAD_TOKEN]: Joi.string().optional(),
 };
 
 export default Joi.object(validationSchemaMap);
