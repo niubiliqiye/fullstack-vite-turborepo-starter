@@ -1,0 +1,3 @@
+[submodule "packages/log-uploader"]
+	path = packages/log-uploader
+	url = git@github.com:niubiliqiye/Log-Uploader.git
